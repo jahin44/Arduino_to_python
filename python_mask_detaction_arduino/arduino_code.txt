@@ -1,0 +1,31 @@
+const int buzzer = 9; // the pin that the LED is attached to
+int incomingByte;        // a variable to read incoming serial data into
+
+void setup() {
+  // initialize serial communication:
+  Serial.begin(9600);
+  // initialize the LED pin as an output:
+  pinMode(buzzer,OUTPUT);
+}
+
+void loop() {
+ 
+   
+
+while(1) {
+       int num=0;
+       if (Serial.available()) {
+     
+       num= int(Serial.read()); 
+        // statement block
+      if (num=='1')
+            { tone(buzzer, 3000);// Send 1KHz sound signal...
+                 
+             }
+          else {
+              noTone(buzzer); // Send 1KHz sound signal...
+              
+               }
+                      }
+            }
+     }
