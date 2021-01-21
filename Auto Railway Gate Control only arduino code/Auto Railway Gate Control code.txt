@@ -1,0 +1,45 @@
+int s1=0; 
+int s2=0; 
+int sensor2=5; 
+int sensor1=3; //distance sensor on pin 4 & 5 
+int m1=10; 
+int m2=12; 
+int PreparingToClose=0; 
+void setup() { 
+ Serial.begin(9800); 
+ pinMode(m1,OUTPUT); 
+ pinMode(m2,OUTPUT); 
+} 
+void loop() { 
+s1=digitalRead(sensor1); 
+s2=digitalRead(sensor2); 
+if (s1 == 1){ //if distance sensor detects train 
+ delay(100); // wait 
+ s1=digitalRead(sensor1); 
+ if ( s1 == 1){ // check again to make sure train is actually there  PreparingToClose=1;  
+Serial.println("train"); 
+digitalWrite(m1,LOW); 
+digitalWrite(m2,HIGH); 
+delay(500); 
+digitalWrite(m1,LOW); 
+digitalWrite(m2,LOW); 
+Serial.println("road closed"); 
+ } 
+} 
+if (PreparingToClose==1){ //if a train has been detected s2=digitalRead(sensor2); 
+ if (s2 == 1){ // if the train is now leaving 
+ delay(200); 
+ s2=digitalRead(sensor2);  
+ if (s2 == 1){ 
+Serial.println("goes");  
+digitalWrite(m1,HIGH); 
+digitalWrite(m2,LOW); 
+delay(500); 
+digitalWrite(m1,LOW); 
+digitalWrite(m2,LOW); PreparingToClose=0; //reset the trigger Serial.println("road open"); 
+
+} 
+}  
+}  
+ delay(10); 
+} 
