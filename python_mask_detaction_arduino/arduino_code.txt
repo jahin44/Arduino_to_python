@@ -13,7 +13,7 @@ void loop() {
    
 
 while(1) {
-       int num=0;
+        int num=0;
        if (Serial.available()) {
      
        num= int(Serial.read()); 
