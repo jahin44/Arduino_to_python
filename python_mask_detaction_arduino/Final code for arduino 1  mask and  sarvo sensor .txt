@@ -1,0 +1,101 @@
+//Arduino 1
+
+#include<Servo.h>
+int s1=0;  
+Servo sMotor;   // Sarvo ar sarvo function object 
+int sensor1=3;     // IR sensor pin intialize
+double tim=0;
+int sec=0;
+int i =0;
+int j=0;
+
+
+void setup() {      
+
+sMotor.attach(9);         // Motor pin intialize
+Serial.begin(9800);
+sMotor.write(0);
+
+}
+
+
+
+void lightOff(){         //RED led off function
+Serial.print('0');       //Send Signal in Ardiuno 2
+}
+
+
+
+void lightOn(){        //RED led on function
+  Serial.print('1');    //Send Signal in Ardiuno 2
+}
+
+
+void closeDoor(){        //closeDoor function closed by IR signal
+if (j>100){
+  for (j=180;j>=0;j--){
+  sMotor.write(j);
+  delay(6);
+}
+i =0;
+j=0;
+}
+  }
+
+  
+void openDoor(){               //OpenDoor function by Mask signal
+if (i<100){
+for (i=0;i<=180;i++){
+  sMotor.write(i);
+  delay(6);
+}
+j=180; 
+i=180;
+}
+ }
+
+
+
+
+int num=0;    //behuda initialize 
+
+void loop() {               // Main function start***********
+  
+   while (Serial.available() > 0) {
+    num=Serial.read(); 
+    tim=millis();
+   }
+if (tim>=1000){
+  sec=sec+1;
+tim=0;
+}
+
+s1=digitalRead(sensor1);        //S1 variable to recive IR signal     
+
+  if(num=='0'){                   //Condition for NO-Mask RED led on
+      lightOn();
+      delay(500);
+      num='3';
+           }
+
+if (sec>=30){
+     closeDoor();           
+      sec=0;
+      s1=2;
+}
+
+   if(num=='1'){                  //Condition for Mask RED led off
+
+      lightOff();
+   
+      openDoor();            //OpenDoor function call by Mask signal
+      num='3';
+      sec=0;
+     
+    }
+    if (s1==0){          //CloseDoor function call by IR signal
+      closeDoor();           
+      sec=0;
+      s1=2;
+    }
+}
